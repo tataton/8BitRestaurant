@@ -27,6 +27,7 @@ Each table will only ever have one server.
 Additional functionality
 ------------------------
 If time allows, the client has asked for these stretch goals:
+* data integrity - disallow bad data from user( empty fields, duplicate inputs, etc)
 * an "on duty" field for servers. Only servers that are on duty can be assigned to tables
 * reports per employee - click on an employee and display only his/her assigned tables
 * filter tables by status
