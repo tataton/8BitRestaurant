@@ -5,3 +5,11 @@ select {
 li {
     list-style: none;
 }
+.current-tables {
+    max-width: 20%;
+    display: inline;
+}
+
+.bad-input {
+    background-color: rgba(178,34,34,.4);
+}

@@ -91,22 +91,28 @@ var createTable = function() {
     // get user input
     var tableName = document.getElementById('nameIn').value;
     var tableCapacity = document.getElementById('capacityIn').value;
-    // table object for new table
-    $.ajax({
-        type: 'POST',
-        url: '/tables',
-        data: {
-            name: tableName,
-            capacity: tableCapacity
-        }, // end object
-        success: function(response){
-            console.log(response);
-            // clear input value
-            $('#nameIn').val('');
-            $('#capacityIn').val('');
-            getTablesAndServers();
-        }
-    });
+    //validate user input for blanks
+    if (tableName === "") {
+        $('#nameIn').addClass('bad-input');
+    } else {
+        $('#nameIn').removeClass('bad-input');
+        // table object for new table
+        $.ajax({
+            type: 'POST',
+            url: '/tables',
+            data: {
+                name: tableName,
+                capacity: tableCapacity
+            }, // end object
+            success: function(response){
+                console.log(response);
+                // clear input value
+                $('#nameIn').val('');
+                $('#capacityIn').val('');
+                getTablesAndServers();
+            } // end success
+        }); // end ajax
+    } // end else
 }; // end createTable
 
 var cycleStatus = function(status) {
@@ -146,7 +152,7 @@ function displayTables(tableArray, employeeArray) {
     // Clear the current table info
     $('#tablesOutput').html('');
     // Create the select box to use for each table
-    var selectText = '<select><option disabled >Choose A Server</option>';
+    var selectText = '<select class="form-control current-tables"><option disabled >Choose A Server</option>';
     for (var i = 0; i < employeeArray.length; i++) {
         selectText += '<option value="' + employeeArray[i].id + '">';
         selectText += employeeArray[i].first_name + ' ';
