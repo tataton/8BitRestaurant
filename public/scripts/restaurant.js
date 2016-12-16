@@ -4,35 +4,42 @@ var employees = [];
 
 $(document).ready(function() {
     getTablesAndServers();
-    $(document).on('change', 'select', function() {
-        console.log('changed a wait staff');
-        var tableID = $(this).closest('p').data('id');
-        var status = $(this).siblings('button').text();
-        var employeeID = $(this).val();
-        var objectToSend = {
-            id: tableID,
-            status: status,
-            employee_id: employeeID
-        }; // end objectToSend
-        updateTable(objectToSend);
-    }); // end select change
-
-    $(document).on('click', '.status', function() {
-        console.log('status button clicked');
-        var status = cycleStatus($(this).text());
-        var tableID = $(this).closest('p').data('id');
-        var employeeID = $(this).siblings('select').val();
-        var objectToSend = {
-            id: tableID,
-            status: status,
-            employee_id: employeeID
-        }; // end objectToSend
-        console.log(objectToSend);
-        updateTable(objectToSend);
-    }); // end .status
+    $(document).on('change', 'select', employeeChanged);
+    $(document).on('click', '.status', statusChanged);
 }); // end .status click
 
+function statusChanged() {
+    // If a table's status is changed, get the new status and update the
+    // database
+    console.log('status button clicked');
+    var status = cycleStatus($(this).text());
+    var tableID = $(this).closest('p').data('id');
+    var employeeID = $(this).siblings('select').val();
+    var objectToSend = {
+        id: tableID,
+        status: status,
+        employee_id: employeeID
+    }; // end objectToSend
+    console.log(objectToSend);
+    updateTable(objectToSend);
+}
+
+function employeeChanged() {
+    // If a table's employee is changed, update the database
+    console.log('changed a wait staff');
+    var tableID = $(this).closest('p').data('id');
+    var status = $(this).siblings('button').text();
+    var employeeID = $(this).val();
+    var objectToSend = {
+        id: tableID,
+        status: status,
+        employee_id: employeeID
+    }; // end objectToSend
+    updateTable(objectToSend);
+}
+
 function updateTable(objectToSend) {
+    // Puts a table to the server to update the DB
     $.ajax({
         url: '/tables',
         type: 'PUT',
@@ -45,15 +52,18 @@ function updateTable(objectToSend) {
 } // end updateTable
 
 function validateServerInputs() {
+    // Reset input classes and get values
     var firstName = $('#employeeFirstNameIn').removeClass('bad-input').val();
     var lastName = $('#employeeLastNameIn').removeClass('bad-input').val();
     if (firstName === '') {
+        // Highlight first input if no value
         $('#employeeFirstNameIn').addClass('bad-input');
     }
     if (lastName === '') {
+        // Highlight second input if no value
         $('#employeeLastNameIn').addClass('bad-input');
     }
-
+    // Only return true if neither input is blank
     return firstName !== '' && lastName !== '';
 }
 
@@ -75,8 +85,9 @@ var createEmployee = function() {
     // get user input
     var employeeFirstName = $('#employeeFirstNameIn').val();
     var employeeLastName = $('#employeeLastNameIn').val();
-    //ajax
+    // Check if inputs have valid values and only POST to server if true
     if (validateServerInputs()) {
+        // POST AJAX to server
         $.ajax({
             type: 'POST',
             url: '/employees',
@@ -89,13 +100,14 @@ var createEmployee = function() {
                 //clear input values
                 $('#employeeFirstName').val('');
                 $('#employeeLastName').val('');
+                // Display updated info
                 getTablesAndServers();
             }, // end success
             error: function(err) {
                     console.log(err);
                 } // end error
         }); // end ajax
-    }
+    } // end if
 }; // end createEmployee
 
 var createTable = function() {
