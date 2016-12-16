@@ -157,8 +157,8 @@ function displayTables(tableArray, employeeArray) {
     for (i = 0; i < tableArray.length; i++) {
         // Get the current table
         var table = tableArray[i];
-        var htmlString = '<p id="table-' + table.id + '" data-id="' + table.id + '">' + table.name + ' - capacity: ' + table.capacity;
-        htmlString += ', server: ' + selectText + ', status: <button class="status">';
+        var htmlString = '<p id="table-' + table.id + '" data-id="' + table.id + '" class="text-center">' + table.name + ' - capacity: ' + table.capacity;
+        htmlString += ', server: ' + selectText + ', status: <button class="status btn btn-primary" type="button">';
         htmlString += table.status + '</button>';
         $('#tablesOutput').append(htmlString);
         $('#table-' + table.id).find('select').val(table.employee_id);

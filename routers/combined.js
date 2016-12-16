@@ -20,7 +20,7 @@ router.get('/', function(req, res) {
                 employees.push(row);
             }); // end query
             // var tableQuery = client.query('SELECT * from tabletops LEFT JOIN employees ON employees.id = tabletops.employee_id');
-            var tableQuery = client.query('SELECT * from tabletops');
+            var tableQuery = client.query('SELECT * from tabletops ORDER BY name ASC');
             tableQuery.on('row', function(row) {
                 tables.push(row);
             });

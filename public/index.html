@@ -4,27 +4,48 @@
     <meta charset="utf-8">
     <title>Restaurant Example</title>
     <script src="scripts/vendors/jquery-3.1.1.min.js" charset="utf-8"></script>
-    <script src="scripts/restaurant.js" charset="utf-8"></script>
+    <script src="scripts/restaurant.js" charset="utf-8"></script>    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/master.css">
   </head>
   <body>
-    <h1>Restaurant POC</h1>
-    <h2>Create Table</h2>
-    Name:<input type="text" id="nameIn" placeholder="Ex: table01">
-    Capacity:<select id="capacityIn">
-      <option>2</option>
-      <option>4</option>
-      <option>6</option>
-      <option>8</option>
-      <option>10</option>
-    </select>
-    <button onclick="createTable();">Add Table</button>
-    <h2>Create Employee</h2>
-    <input type="text" id="employeeFirstNameIn" value="" placeholder="First Name">
-    <input type="text" id="employeeLastNameIn" value="" placeholder="Last Name">
-    <button onclick="createEmployee()">Add Employee</button>
-    <h2>Current Employees</h2>
-    <div id="employeesOutput"></div>
-    <h2>Current Tables</h2>
+    <h1 class="text-center">Restaurant POC</h1>
+    <h2 class="text-center">Create Table</h2>
+    <form class="form-inline text-center">
+        <div class="form-group">
+            <label for="nameIn">Name:</label>
+            <input type="text" id="nameIn" placeholder="Ex: table01" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="capacityIn">Capacity</label>
+            <select id="capacityIn" class="form-control">
+              <option>2</option>
+              <option>4</option>
+              <option>6</option>
+              <option>8</option>
+              <option>10</option>
+            </select>
+        </div>
+        <button onclick="createTable();" type="button" class="btn btn-primary">Add Table</button>
+    </form>
+
+    <h2 class="text-center">Create Employee</h2>
+    <form class="form-inline text-center">
+        <div class="form-group">
+            <label for="employeeFirstNameIn">First Name:</label>
+            <input type="text" id="employeeFirstNameIn" value="" placeholder="First Name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="employeeLastNameIn">Last Name:</label>
+            <input type="text" id="employeeLastNameIn" value="" placeholder="Last Name" class="form-control">
+        </div>
+        <button onclick="createEmployee()" class="btn btn-primary" type="button">Add Employee</button>
+    </form>
+
+    <h2 class="text-center">Current Employees</h2>
+    <div id="employeesOutput" class="text-center"></div>
+    <h2 class="text-center">Current Tables</h2>
     <div id="tablesOutput"></div>
   </body>
 </html>
