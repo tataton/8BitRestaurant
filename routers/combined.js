@@ -15,15 +15,20 @@ router.get('/', function(req, res){
       console.log(err);
     } else {
       console.log('connected to db');
-      var query = client.query('SELECT * FROM employees');
-      query.on('row', function(row){
+      var employeeQuery = client.query('SELECT * FROM employees');
+      employeeQuery.on('row', function(row){
         employees.push(row);
       }); // end query
-      query.on('end', function(){
+      var tableQuery = client.query('SELECT * from tabletops LEFT JOIN employees ON employees.id = tabletops.employee_id');
+      tableQuery.on('row', function(row){
+          tables.push(row);
+      });
+      tableQuery.on('end', function(){
         done();
         console.log(employees);
-        //send a response
-        res.send(true);
+        var object_to_send = {employees: employees,
+        tables: tables};
+        res.send(object_to_send);
       });
     }
   });
