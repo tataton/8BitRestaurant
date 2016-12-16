@@ -12,8 +12,8 @@ var connectionString = 'postgres://localhost:5432/eight_bit_database';
 
 // -- ROUTES -- //
 
-// var employees = require('../routers/employees');
-// app.use('/employees', employees);
+var employees = require('../routers/employees');
+app.use('/employees', employees);
 // var tables = require('../routers/tables');
 // app.use('/tables', tables);
 var combined = require('../routers/combined');
