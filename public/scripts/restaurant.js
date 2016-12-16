@@ -13,9 +13,10 @@ $(document).ready(function() {
             id: tableID,
             status: status,
             employee_id: employeeID
-        };
+        }; // end objectToSend
         updateTable(objectToSend);
-    });
+    }); // end select change
+
     $(document).on('click', '.status', function() {
         console.log('status button clicked');
         var status = cycleStatus($(this).text());
@@ -29,7 +30,7 @@ $(document).ready(function() {
         console.log(objectToSend);
         updateTable(objectToSend);
     }); // end .status
-});
+}); // end .status click
 
 function updateTable(objectToSend) {
     $.ajax({
@@ -37,10 +38,23 @@ function updateTable(objectToSend) {
         type: 'PUT',
         data: objectToSend,
         success: function(response) {
-            console.log(response);
-            getTablesAndServers();
-        }
-    });
+                console.log(response);
+                getTablesAndServers();
+            } // end success
+    }); // end ajax
+} // end updateTable
+
+function validateServerInputs() {
+    var firstName = $('#employeeFirstNameIn').removeClass('bad-input').val();
+    var lastName = $('#employeeLastNameIn').removeClass('bad-input').val();
+    if (firstName === '') {
+        $('#employeeFirstNameIn').addClass('bad-input');
+    }
+    if (lastName === '') {
+        $('#employeeLastNameIn').addClass('bad-input');
+    }
+
+    return firstName !== '' && lastName !== '';
 }
 
 function getTablesAndServers() {
@@ -49,12 +63,12 @@ function getTablesAndServers() {
         url: '/combined',
         type: 'GET',
         success: function(response) {
-            console.log(response);
-            displayEmployees(response.employees);
-            displayTables(response.tables, response.employees);
-        }
-    });
-}
+                console.log(response);
+                displayEmployees(response.employees);
+                displayTables(response.tables, response.employees);
+            } // end success
+    }); // end ajax
+} // end getTablesAndServers
 
 var createEmployee = function() {
     console.log('in createEmployee');
@@ -62,28 +76,26 @@ var createEmployee = function() {
     var employeeFirstName = $('#employeeFirstNameIn').val();
     var employeeLastName = $('#employeeLastNameIn').val();
     //ajax
-    $.ajax({
-        type: 'POST',
-        url: '/employees',
-        data: {
-            first_name: employeeFirstName,
-            last_name: employeeLastName
-        }, // end object
-        success: function(response) {
-            console.log(response);
-            //clear input values
-            $('#employeeFirstName').val('');
-            $('#employeeLastName').val('');
-            getTablesAndServers();
-        }, // end success
-        error: function(err) {
-                console.log(err);
-            } // end error
-    }); // end ajax
-
-
-    // update display
-    listEmployees();
+    if (validateServerInputs()) {
+        $.ajax({
+            type: 'POST',
+            url: '/employees',
+            data: {
+                first_name: employeeFirstName,
+                last_name: employeeLastName
+            }, // end object
+            success: function(response) {
+                console.log(response);
+                //clear input values
+                $('#employeeFirstName').val('');
+                $('#employeeLastName').val('');
+                getTablesAndServers();
+            }, // end success
+            error: function(err) {
+                    console.log(err);
+                } // end error
+        }); // end ajax
+    }
 }; // end createEmployee
 
 var createTable = function() {
@@ -104,13 +116,13 @@ var createTable = function() {
                 name: tableName,
                 capacity: tableCapacity
             }, // end object
-            success: function(response){
-                console.log(response);
-                // clear input value
-                $('#nameIn').val('');
-                $('#capacityIn').val('');
-                getTablesAndServers();
-            } // end success
+            success: function(response) {
+                    console.log(response);
+                    // clear input value
+                    $('#nameIn').val('');
+                    $('#capacityIn').val('');
+                    getTablesAndServers();
+                } // end success
         }); // end ajax
     } // end else
 }; // end createTable
@@ -120,7 +132,7 @@ var cycleStatus = function(status) {
     // move table status to next status
     switch (status) {
         case 'empty':
-            return'seated';
+            return 'seated';
         case 'seated':
             return 'served';
         case 'served':
@@ -129,7 +141,7 @@ var cycleStatus = function(status) {
             return 'empty';
         default:
             return 'empty';
-    }
+    } // end switch
 }; // end cycleStatus
 
 function displayEmployees(employeeArray) {
@@ -141,11 +153,11 @@ function displayEmployees(employeeArray) {
         var emp = employeeArray[i];
         // and build their list item
         htmlString += '<li>' + emp.first_name + ' ' + emp.last_name + ', id: ' + emp.id + '</li>';
-    }
+    } // end for
     htmlString += '</ul>';
     // Add to the DOM
     $('#employeesOutput').html(htmlString);
-}
+} // end displayEmployees
 
 function displayTables(tableArray, employeeArray) {
     // Displays tables on the DOM with a status button and a employee drop down
@@ -157,9 +169,9 @@ function displayTables(tableArray, employeeArray) {
         selectText += '<option value="' + employeeArray[i].id + '">';
         selectText += employeeArray[i].first_name + ' ';
         selectText += employeeArray[i].last_name + '</option>';
-    }
+    } // end for
     selectText += '</select>';
-        // Iterate through tables
+    // Iterate through tables
     for (i = 0; i < tableArray.length; i++) {
         // Get the current table
         var table = tableArray[i];
@@ -168,5 +180,5 @@ function displayTables(tableArray, employeeArray) {
         htmlString += table.status + '</button>';
         $('#tablesOutput').append(htmlString);
         $('#table-' + table.id).find('select').val(table.employee_id);
-    }
-}
+    } // end for
+} // end displayTables
