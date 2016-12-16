@@ -8,7 +8,7 @@ CREATE TABLE tabletops (
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR (50) UNIQUE,
     capacity INTEGER,
-    status VARCHAR (50),
+    status VARCHAR (50) DEFAULT 'empty',
     employee_id INTEGER REFERENCES employees(id) ON DELETE SET NULL
 );
 
