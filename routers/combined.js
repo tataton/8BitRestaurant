@@ -3,7 +3,7 @@ var router = express.Router();
 var path = require('path');
 var pg = require('pg');
 
-var connectionString = 'postgres://localhost:5432/eight_bit_database';
+var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/eight_bit_database';
 
 router.get('/', function(req, res) {
     var employees = [];

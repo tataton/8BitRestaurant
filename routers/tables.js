@@ -10,7 +10,7 @@ router.use(bodyParser.urlencoded({
 }));
 router.use(bodyParser.json());
 
-var connectionString = 'postgres://localhost:5432/eight_bit_database';
+var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/eight_bit_database';
 
 router.post('/', function(req, res) {
     // If any value is undefined, or if name is an empty string, or if capacity is not an integer, fail
