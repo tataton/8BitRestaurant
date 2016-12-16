@@ -25,35 +25,4 @@ app.use('/combined', combined);
 // spin up server
 app.listen(port, function() {
     console.log('server up on', port);
-
-    // Create tables if they don't already exist
-    pg.connect(connectionString, function(err, client, done) {
-        if (err) {
-            console.log(err);
-        } else {
-            var query = 'CREATE TABLE employees (';
-            query += 'id SERIAL PRIMARY KEY NOT NULL,';
-            query += 'first_name VARCHAR (50) UNIQUE,';
-            query += 'last_name VARCHAR (50) UNIQUE';
-            query += ');';
-            client.query(query, function(err) {
-                if (err) {
-                    console.log(err);
-                } // end if
-            }); //end query
-
-            query = 'CREATE TABLE tabletops (';
-            query += 'id SERIAL PRIMARY KEY NOT NULL,';
-            query += 'name VARCHAR (50) UNIQUE,';
-            query += 'capacity INTEGER,';
-            query += 'status VARCHAR (50) DEFAULT ';
-            query += ',';
-            query += 'employee_id INTEGER REFERENCES employees(id) ON DELETE SET NULL';
-            client.query(query, function(err) {
-                if (err) {
-                    console.log(err);
-                } // end if
-            }); // end query
-        }
-    });
 });
