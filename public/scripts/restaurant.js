@@ -16,6 +16,19 @@ $(document).ready(function() {
         };
         updateTable(objectToSend);
     });
+    $(document).on('click', '.status', function() {
+        console.log('status button clicked');
+        var status = cycleStatus($(this).text());
+        var tableID = $(this).closest('p').data('id');
+        var employeeID = $(this).siblings('select').val();
+        var objectToSend = {
+            id: tableID,
+            status: status,
+            employee_id: employeeID
+        }; // end objectToSend
+        console.log(objectToSend);
+        updateTable(objectToSend);
+    }); // end .status
 });
 
 function updateTable(objectToSend) {
@@ -96,25 +109,21 @@ var createTable = function() {
     });
 }; // end createTable
 
-var cycleStatus = function(index) {
-    console.log('in cycleStatus: ' + index);
+var cycleStatus = function(status) {
+    console.log('in cycleStatus: status when clicked:' + status);
     // move table status to next status
-    switch (tables[index].status) {
+    switch (status) {
         case 'empty':
-            tables[index].status = 'seated';
-            break;
+            return'seated';
         case 'seated':
-            tables[index].status = 'served';
-            break;
+            return 'served';
         case 'served':
-            tables[index].status = 'dirty';
-            break;
+            return 'dirty';
         case 'dirty':
+            return 'empty';
         default:
-            tables[index].status = 'empty';
+            return 'empty';
     }
-    // show tables on DOM
-    listTables();
 }; // end cycleStatus
 
 function displayEmployees(employeeArray) {
@@ -149,7 +158,7 @@ function displayTables(tableArray, employeeArray) {
         // Get the current table
         var table = tableArray[i];
         var htmlString = '<p id="table-' + table.id + '" data-id="' + table.id + '">' + table.name + ' - capacity: ' + table.capacity;
-        htmlString += ', server: ' + selectText + ', status: <button>';
+        htmlString += ', server: ' + selectText + ', status: <button class="status">';
         htmlString += table.status + '</button>';
         $('#tablesOutput').append(htmlString);
         $('#table-' + table.id).find('select').val(table.employee_id);
