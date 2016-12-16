@@ -55,17 +55,21 @@ var createTable = function() {
     var tableName = document.getElementById('nameIn').value;
     var tableCapacity = document.getElementById('capacityIn').value;
     // table object for new table
-    var newTable = {
-        'name': tableName,
-        'capacity': tableCapacity,
-        'server': -1,
-        'status': 'empty'
-    };
-    // push new obejct into tables array
-    tables.push(newTable);
-    console.log('added table: ' + newTable.name);
-    // update output
-    listTables();
+    $.ajax({
+        type: 'POST',
+        url: '/tables',
+        data: {
+            name: tableName,
+            capacity: tableCapacity
+        }, // end object
+        success: function(response){
+            console.log(response);
+            // clear input value
+            $('#nameIn').val('');
+            $('#capacityIn').val('');
+            getTablesAndServers();
+        }
+    });
 }; // end createTable
 
 var cycleStatus = function(index) {
