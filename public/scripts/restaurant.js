@@ -4,7 +4,31 @@ var employees = [];
 
 $(document).ready(function() {
     getTablesAndServers();
+    $(document).on('change', 'select', function() {
+        console.log('changed a wait staff');
+        var tableID = $(this).closest('p').data('id');
+        var status = $(this).siblings('button').text();
+        var employeeID = $(this).val();
+        var objectToSend = {
+            id: tableID,
+            status: status,
+            employee_id: employeeID
+        };
+        updateTable(objectToSend);
+    });
 });
+
+function updateTable(objectToSend) {
+    $.ajax({
+        url: '/tables',
+        type: 'PUT',
+        data: objectToSend,
+        success: function(response) {
+            console.log(response);
+            getTablesAndServers();
+        }
+    });
+}
 
 function getTablesAndServers() {
     console.log('Getting info');
@@ -93,11 +117,6 @@ var cycleStatus = function(index) {
     listTables();
 }; // end cycleStatus
 
-
-function displayOnDOM(dataObject) {
-
-}
-
 function displayEmployees(employeeArray) {
     // Displays employees in an unordered list
     var htmlString = '<ul>';
@@ -118,7 +137,7 @@ function displayTables(tableArray, employeeArray) {
     // Clear the current table info
     $('#tablesOutput').html('');
     // Create the select box to use for each table
-    var selectText = '<select><option disabled>Choose A Server</option>';
+    var selectText = '<select><option disabled >Choose A Server</option>';
     for (var i = 0; i < employeeArray.length; i++) {
         selectText += '<option value="' + employeeArray[i].id + '">';
         selectText += employeeArray[i].first_name + ' ';
@@ -129,7 +148,7 @@ function displayTables(tableArray, employeeArray) {
     for (i = 0; i < tableArray.length; i++) {
         // Get the current table
         var table = tableArray[i];
-        var htmlString = '<p id="table-' + table.id + '">' + table.name + ' - capacity: ' + table.capacity;
+        var htmlString = '<p id="table-' + table.id + '" data-id="' + table.id + '">' + table.name + ' - capacity: ' + table.capacity;
         htmlString += ', server: ' + selectText + ', status: <button>';
         htmlString += table.status + '</button>';
         $('#tablesOutput').append(htmlString);

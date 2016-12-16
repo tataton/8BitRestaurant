@@ -19,7 +19,8 @@ router.get('/', function(req, res) {
             employeeQuery.on('row', function(row) {
                 employees.push(row);
             }); // end query
-            var tableQuery = client.query('SELECT * from tabletops LEFT JOIN employees ON employees.id = tabletops.employee_id');
+            // var tableQuery = client.query('SELECT * from tabletops LEFT JOIN employees ON employees.id = tabletops.employee_id');
+            var tableQuery = client.query('SELECT * from tabletops');
             tableQuery.on('row', function(row) {
                 tables.push(row);
             });
